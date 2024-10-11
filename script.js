@@ -7,12 +7,19 @@ const portfolioLists=document.querySelectorAll('.portfolio-list');
 const portfolioBoxs=document.querySelectorAll('.portfolio-box');
 navs.forEach((nav,idx) => {
   nav.addEventListener('click',()=>{
+    if (nav.id === 'light-mode-toggle') {
+        return; // Do nothing if the light mode toggle is clicked
+      }
         document.querySelector('.nav-list li.active').classList.remove('active');
         nav.classList.add('active');
    
     if (idx === 4) {
         cube.style.transform = `rotateY(${idx * -90}deg)`; 
-      } else {
+      }
+      else if(idx===5){
+        cube.style.transform = `rotateY(0deg)`; 
+      } 
+      else {
         cube.style.transform = `rotateY(${idx * -90}deg)`; 
       }
       const contactSection = document.querySelector('.section.contact');
@@ -58,3 +65,71 @@ portfolioLists.forEach((list,idx) => {
     })
 });
 
+const lightModeToggle = document.getElementById('light-mode-toggle');
+const body = document.body;
+
+lightModeToggle.addEventListener('click', (event) => {
+    event.stopPropagation(); 
+  body.classList.toggle('light-mode');
+
+ 
+  if (body.classList.contains('light-mode')) {
+    lightModeToggle.innerHTML = `
+      <i class="bx bx-moon"></i>
+      <span class="tooltip">Toggle Dark</span>
+    `;
+  } else {
+    lightModeToggle.innerHTML = `
+      <i class="bx bx-sun"></i>
+      <span class="tooltip">Toggle Light</span>
+    `;
+  }
+  
+});
+
+(function () {
+    emailjs.init("tvOnFBaok9yYjCTXB"); 
+})();
+
+document.querySelector(".contact-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const name = document.querySelector('input[placeholder="Full Name"]').value;
+    const email = document.querySelector('input[placeholder="Email Address"]').value;
+    const subject = document.querySelector('input[placeholder="Email Subject"]').value;
+    const message = document.querySelector('textarea[placeholder="Your Message"]').value;
+
+    const templateParams = {
+        name: name,
+        email: email,
+        subject: subject, // Add this if you want to include the subject
+        message: message,
+        template: `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Contact Form Submission</title>
+        </head>
+        <body>
+            <h2>You have a new contact form submission!</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Subject:</strong> ${subject}</p> <!-- Add subject here -->
+            <p><strong>Message:</strong></p>
+            <p>${message}</p>
+        </body>
+        </html>
+        `
+    };
+
+    emailjs.send("service_vbw42nx", "template_exu3qy8", templateParams)
+        .then(function(response) {
+            console.log("Email sent successfully!", response.status, response.text);
+            alert("Your message has been sent successfully!");
+        }, function(error) {
+            console.error("Failed to send email. Error: ", error);
+            alert("There was an error sending your message. Please try again.");
+        });
+});
