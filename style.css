@@ -447,7 +447,7 @@ visibility: hidden;
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: .3s;
 }
 .portfolio-item:hover .work-img img{
@@ -485,7 +485,7 @@ visibility: hidden;
     margin-right: 1rem;
 }
 .portfolio-item .work-icon a:nth-child(1) i{
-    transform: rotate(135deg);
+    /* transform: rotate(180deg); */
 }
 .portfolio-item .service-icon{
     display: flex;

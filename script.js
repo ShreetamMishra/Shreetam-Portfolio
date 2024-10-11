@@ -92,44 +92,60 @@ lightModeToggle.addEventListener('click', (event) => {
 })();
 
 document.querySelector(".contact-form").addEventListener("submit", function (event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const name = document.querySelector('input[placeholder="Full Name"]').value;
-    const email = document.querySelector('input[placeholder="Email Address"]').value;
-    const subject = document.querySelector('input[placeholder="Email Subject"]').value;
-    const message = document.querySelector('textarea[placeholder="Your Message"]').value;
+  const nameInput = document.querySelector('input[placeholder="Full Name"]');
+  const emailInput = document.querySelector('input[placeholder="Email Address"]');
+  const subjectInput = document.querySelector('input[placeholder="Email Subject"]');
+  const phoneInput = document.querySelector('input[placeholder="Phone Number"]'); 
+  const messageInput = document.querySelector('textarea[placeholder="Your Message"]');
 
-    const templateParams = {
-        name: name,
-        email: email,
-        subject: subject, // Add this if you want to include the subject
-        message: message,
-        template: `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Contact Form Submission</title>
-        </head>
-        <body>
-            <h2>You have a new contact form submission!</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Subject:</strong> ${subject}</p> <!-- Add subject here -->
-            <p><strong>Message:</strong></p>
-            <p>${message}</p>
-        </body>
-        </html>
-        `
-    };
+  const name = nameInput.value;
+  const email = emailInput.value;
+  const subject = subjectInput.value;
+  const phone = phoneInput.value; 
+  const message = messageInput.value;
 
-    emailjs.send("service_vbw42nx", "template_exu3qy8", templateParams)
-        .then(function(response) {
-            console.log("Email sent successfully!", response.status, response.text);
-            alert("Your message has been sent successfully!");
-        }, function(error) {
-            console.error("Failed to send email. Error: ", error);
-            alert("There was an error sending your message. Please try again.");
-        });
+  const templateParams = {
+      name: name,
+      email: email,
+      subject: subject,
+      phone: phone, 
+      message: message,
+      template: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Contact Form Submission</title>
+      </head>
+      <body>
+          <h2>You have a new contact form submission!</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone}</p> <!-- Add phone number here -->
+          <p><strong>Subject:</strong> ${subject}</p>
+          <p><strong>Message:</strong></p>
+          <p>${message}</p>
+      </body>
+      </html>
+      `
+  };
+
+  emailjs.send("service_vbw42nx", "template_exu3qy8", templateParams)
+      .then(function(response) {
+          console.log("Email sent successfully!", response.status, response.text);
+          alert("Your message has been sent successfully!");
+
+       
+          nameInput.value = "";
+          emailInput.value = "";
+          subjectInput.value = "";
+          phoneInput.value = ""; 
+          messageInput.value = "";
+      }, function(error) {
+          console.error("Failed to send email. Error: ", error);
+          alert("There was an error sending your message. Please try again.");
+      });
 });
